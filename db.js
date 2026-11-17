@@ -26,3 +26,17 @@ export async function putNote(note) {
     tx.onabort = () => reject(tx.error);
   });
 }
+function resultOf(request) {
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+export async function listNotes(channel = 'all', starred = false) {
+  const db = await openDB();
+  const store = db.transaction('notes').objectStore('notes');
+  const request = channel !== 'all' && starred ? store.index('channelFavorite').getAll([channel, 1])
+    : channel !== 'all' ? store.index('channel').getAll(channel)
+    : starred ? store.index('favorite').getAll(1) : store.getAll();
+  return resultOf(request);
+}

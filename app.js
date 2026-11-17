@@ -1,4 +1,5 @@
 import {openDB, putNote} from './db.js';
+import {refreshLibrary} from './library.js';
  
 const $ = selector => document.querySelector(selector);
 const stations = ['library', 'record', 'settings'];
@@ -23,3 +24,4 @@ $('#note-form').addEventListener('submit', async event => {
     $('#message').textContent = 'Saving failed. Try again.';
   }
 });
+refreshLibrary().catch(error => { console.error(error); $('#message').textContent = 'Could not load saved notes.'; });
