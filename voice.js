@@ -2,6 +2,7 @@ const $ = selector => document.querySelector(selector);
 const Recognizer = window.SpeechRecognition || window.webkitSpeechRecognition;
 let listening = false;
 let recognition = null;
+let dictating = false;
  
 function runCommand(words) {
   const command = words.toLowerCase().trim().replace(/[.!?]+$/, '');
@@ -21,6 +22,7 @@ export function initVoice() {
   const button = $('#voice-command');
   if (!Recognizer) {
     button.disabled = true;
+    $('#voice-dictate').disabled = true;
     $('#voice-feedback').textContent = 'NOT SUPPORTED HERE';
     return;
   }
@@ -29,14 +31,23 @@ export function initVoice() {
   recognition.continuous = false;
   recognition.interimResults = false;
   recognition.onstart = () => { listening = true; button.textContent = 'Stop listening'; $('#voice-feedback').textContent = 'LISTENING'; };
-  recognition.onend = () => { listening = false; button.textContent = 'Voice command'; if ($('#voice-feedback').textContent === 'LISTENING') $('#voice-feedback').textContent = 'READY'; };
+  recognition.onend = () => { listening = false; button.textContent = 'Voice command'; $('#voice-feedback').textContent = 'READY'; dictating = false; };
   recognition.onerror = event => { $('#voice-feedback').textContent = `ERROR: ${event.error}`; };
   recognition.onresult = event => {
     const words = event.results[0][0].transcript.trim();
     $('#voice-feedback').textContent = words;
-    runCommand(words);
+    if (dictating) {
+        const field = $('#note-body');
+        field.value = `${field.value}${field.value.trim() ? ' ' : ''}${words}`;
+        field.focus();
+    } else runCommand(words);   
   };
-  button.addEventListener('click', () => {
+  $('#voice-dictate').addEventListener('click', () => {
+    if (listening) { $('#voice-feedback').textContent = 'Finish the current command first'; return; }
+    dictating = true;
+    try { recognition.start(); } catch (error) { dictating = false; console.error(error); }
+    });
+    button.addEventListener('click', () => {
     if (listening) recognition.stop();
     else { try { recognition.start(); } catch (error) { console.error(error); } }
   });
