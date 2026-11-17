@@ -2,6 +2,7 @@ import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
 import {initSettings, refreshStats} from './settings.js';
 import {initRecorder, getDraft, setDraft} from './recorder.js';
+import {initSpeech} from './speech.js';
 
 let editing = null;
  
@@ -48,6 +49,7 @@ $('#note-form').addEventListener('submit', async event => {
     await refreshStats();
     showView('library', true);
     $('#message').textContent = 'Note saved.';
+    document.dispatchEvent(new CustomEvent('rn:announce', {detail:'Note saved.'}));
   } catch (error) { console.error(error); $('#message').textContent = 'Saving failed. Try again.'; }
 });
 document.addEventListener('rn:edit', event => {
@@ -75,4 +77,5 @@ document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEven
 showView(new URLSearchParams(location.search).get('view'));
 openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });
 initSettings();
-initRecorder();   
+initRecorder(); 
+initSpeech();

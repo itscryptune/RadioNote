@@ -58,3 +58,17 @@ export async function clearNotes() {
     tx.onerror = () => reject(tx.error);
   });
 }
+ export async function getSetting(key, fallback = false) {
+  const db = await openDB();
+  const value = await resultOf(db.transaction('settings').objectStore('settings').get(key));
+  return value?.value ?? fallback;
+}
+export async function setSetting(key, value) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('settings', 'readwrite');
+    tx.objectStore('settings').put({key, value});
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
