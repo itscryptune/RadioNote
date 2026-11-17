@@ -16,3 +16,13 @@ export function openDB() {
   });
   return dbPromise;
 }
+export async function putNote(note) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('notes', 'readwrite');
+    tx.objectStore('notes').put(note);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
+  });
+}
