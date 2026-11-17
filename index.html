@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./app.js"></script> 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +16,16 @@
       <div class="receiver-top"><span>FIELD RECORDER / 001</span><span>ON YOUR DESK</span></div>
       <div class="frequency"><span>FM</span><strong id="frequency">88.1</strong><span>MHz</span></div>
   </section>
+  <nav class="stations" aria-label="Radio stations">
+      <a href="?view=library" data-route="library">01 / Library</a>
+      <a href="?view=record" data-route="record">02 / Record</a>
+      <a href="?view=settings" data-route="settings">03 / Settings</a>
+  </nav>
   <main>
-    <p>The archive is still empty. First I need a place to put everything.</p>
+    <section class="screen" data-view="library"><h1>Library</h1><p>Saved notes will show up here.</p></section>
+    <section class="screen" data-view="record" hidden><h1>Record</h1><p>Text comes first. The microphone comes later.</p></section>
+    <section class="screen" data-view="settings" hidden><h1>Settings</h1><p>Backup options will live here.</p></section>
   </main>
+<footer id="message">RadioNote is getting tuned up.</footer>
 </body>
 </html>

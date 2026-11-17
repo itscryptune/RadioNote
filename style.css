@@ -15,3 +15,10 @@ a{color:inherit}
 .frequency strong{font:72px 'Courier New',monospace;letter-spacing:-6px}
 .dial{display:flex;justify-content:space-between;border-top:1px solid #c5c7b8;padding-top:10px;font:11px 'Courier New',monospace}
 @media(max-width:550px){.receiver{margin:15px 12px}.frequency strong{font-size:48px}.signal{display:none}.receiver-top{font-size:8px}}
+[hidden]{display:none!important}
+.stations{max-width:912px;margin:20px auto 0;border-bottom:2px solid #273e33;display:flex;gap:8px}
+.stations a{padding:10px 15px;text-decoration:none;font-weight:bold}
+.stations a:hover{background:#d3c6b3}
+main{min-height:240px}
+footer{max-width:960px;padding:18px 24px;margin:auto;border-top:1px solid #a1a79a;font:11px 'Courier New',monospace}
+@media(max-width:550px){.stations{margin:12px}.stations a{flex:1;padding:8px 4px;text-align:center;font-size:12px}}
