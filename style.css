@@ -53,3 +53,7 @@ button:disabled{opacity:.52;cursor:not-allowed}
 .note-list button.selected{background:#d3c6b3;border-left:4px solid #a65b3c}
 .note-list button:hover{background:#e2d4c1}
 .filters{align-items:end;flex-wrap:wrap}
+.voice-panel{max-width:912px;margin:15px auto 0;padding:14px;border:1px solid #a6a697;background:#eee5d7;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.voice-panel>div{flex:1;min-width:210px}.voice-panel p{margin:3px 0;font-size:12px}
+#voice-feedback{font:11px 'Courier New',monospace;color:#945b42}
+@media(max-width:700px){.voice-panel{margin:12px}}

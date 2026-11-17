@@ -21,6 +21,12 @@
       <a href="?view=record" data-route="record">02 / Record</a>
       <a href="?view=settings" data-route="settings">03 / Settings</a>
   </nav>
+  <section class="voice-panel" aria-label="Voice control">
+      <div><strong>VOICE TUNING</strong><p>Try “open library”, “new note”, “search weekend”, “star note”, or “read note”.</p></div>
+      <button id="voice-command" type="button">Voice command</button>
+      <span id="voice-feedback" role="status" aria-live="polite">READY</span>
+  </section>
+  
   <main>
       <section class="screen" data-view="library">
       <header class="section-head"><div><small>STATION 01 / ARCHIVE</small><h1>Library</h1></div><a href="?view=record" data-route="record">+ New note</a></header>

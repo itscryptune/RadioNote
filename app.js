@@ -3,6 +3,7 @@ import {refreshLibrary} from './library.js';
 import {initSettings, refreshStats} from './settings.js';
 import {initRecorder, getDraft, setDraft} from './recorder.js';
 import {initSpeech} from './speech.js';
+import {initVoice} from './voice.js';
 
 let editing = null;
  
@@ -79,3 +80,4 @@ openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('
 initSettings();
 initRecorder(); 
 initSpeech();
+initVoice();
