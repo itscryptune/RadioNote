@@ -1,6 +1,7 @@
 import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
 import {initSettings, refreshStats} from './settings.js';
+import {initRecorder} from './recorder.js';
 
 let editing = null;
  
@@ -70,3 +71,4 @@ document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEven
 showView(new URLSearchParams(location.search).get('view'));
 openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });
 initSettings();
+initRecorder();
