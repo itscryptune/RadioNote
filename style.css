@@ -22,3 +22,11 @@ a{color:inherit}
 main{min-height:240px}
 footer{max-width:960px;padding:18px 24px;margin:auto;border-top:1px solid #a1a79a;font:11px 'Courier New',monospace}
 @media(max-width:550px){.stations{margin:12px}.stations a{flex:1;padding:8px 4px;text-align:center;font-size:12px}}
+.library-grid{display:grid;grid-template-columns:310px 1fr;min-height:260px;border:1px solid #a6a697}
+.shelf{padding:18px;background:#eee5d7;border-right:1px solid #a6a697}
+.preview{padding:22px}.empty{text-align:center;margin:45px auto}
+#search,#channel-filter{width:100%;padding:9px;border:1px solid #9a9f92;background:#faf6ed}
+.note-list{list-style:none;padding:0;margin:14px 0}.filters{display:flex;gap:8px;margin:12px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{padding:9px 12px;background:#e7dbca;border:1px solid #273e33;cursor:pointer}
+@media(max-width:700px){.library-grid{grid-template-columns:1fr}.shelf{border-right:0;border-bottom:1px solid #a6a697}}

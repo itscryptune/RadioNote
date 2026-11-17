@@ -22,9 +22,36 @@
       <a href="?view=settings" data-route="settings">03 / Settings</a>
   </nav>
   <main>
-    <section class="screen" data-view="library"><h1>Library</h1><p>Saved notes will show up here.</p></section>
-    <section class="screen" data-view="record" hidden><h1>Record</h1><p>Text comes first. The microphone comes later.</p></section>
-    <section class="screen" data-view="settings" hidden><h1>Settings</h1><p>Backup options will live here.</p></section>
+      <section class="screen" data-view="library">
+      <header class="section-head"><div><small>STATION 01 / ARCHIVE</small><h1>Library</h1></div><a href="?view=record" data-route="record">+ New note</a></header>
+      <div class="library-grid">
+      <aside class="shelf">
+            <label for="search">FIND A NOTE</label>
+            <input type="search" id="search" placeholder="Search title or words...">
+            <div class="filters">
+            <label for="channel-filter">CHANNEL
+            <select id="channel-filter"><option value="all">All channels</option><option value="thoughts">Thoughts</option><option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option></select>
+            </label>
+            <label><input type="checkbox" id="favorites-only"> Starred</label>
+            </div>
+            <ul id="note-list" class="note-list" aria-label="Saved notes"></ul>
+            <p id="list-count">NO NOTES YET</p>
+      </aside>
+      <article class="preview">
+            <div class="empty" id="empty-preview"><h2>Nothing on this frequency.</h2><p>When notes exist, they'll show up here.</p></div>
+            <div id="note-preview" hidden>
+            <small id="preview-meta"></small><h2 id="preview-title"></h2><p id="preview-body"></p>
+            <audio id="note-audio" controls hidden></audio>
+            <div class="actions">
+            <button id="read-note" type="button">Read aloud</button><button id="star-note" type="button">☆ Star</button>
+            <button id="edit-note" type="button">Edit</button><button id="delete-note" type="button">Delete</button>
+            </div>
+            </div>
+      </article>
+      </div>
+      </section>
+      <section class="screen" data-view="record" hidden><h1>Record</h1><p>Text comes first. The microphone comes later.</p></section>
+      <section class="screen" data-view="settings" hidden><h1>Settings</h1><p>Backup options will live here.</p></section>
   </main>
 <footer id="message">RadioNote is getting tuned up.</footer>
 </body>
