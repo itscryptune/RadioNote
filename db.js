@@ -49,3 +49,12 @@ export async function deleteNote(id) {
     tx.onerror = () => reject(tx.error);
   });
 }
+export async function clearNotes() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('notes', 'readwrite');
+    tx.objectStore('notes').clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}

@@ -1,5 +1,7 @@
 import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
+import {initSettings, refreshStats} from './settings.js';
+
 let editing = null;
  
 const $ = selector => document.querySelector(selector);
@@ -41,6 +43,7 @@ $('#note-form').addEventListener('submit', async event => {
     $('#note-form').reset();
     $('#editor-heading').textContent = 'Leave a note';
     await refreshLibrary(note.id);
+    await refreshStats();
     showView('library', true);
     $('#message').textContent = 'Note saved.';
   } catch (error) { console.error(error); $('#message').textContent = 'Saving failed. Try again.'; }
@@ -66,3 +69,4 @@ document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEven
 }));
 showView(new URLSearchParams(location.search).get('view'));
 openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });
+initSettings();
