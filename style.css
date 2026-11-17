@@ -47,3 +47,4 @@ button{padding:9px 12px;background:#e7dbca;border:1px solid #273e33;cursor:point
 button:disabled{opacity:.52;cursor:not-allowed}
 #preview-body{white-space:pre-wrap;overflow-wrap:anywhere}
 .note-list button{display:block;width:100%;text-align:left;margin-bottom:6px}
+.stations a.active{background:#d3c6b3;text-decoration:underline;text-underline-offset:4px}
