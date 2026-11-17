@@ -48,3 +48,8 @@ button:disabled{opacity:.52;cursor:not-allowed}
 #preview-body{white-space:pre-wrap;overflow-wrap:anywhere}
 .note-list button{display:block;width:100%;text-align:left;margin-bottom:6px}
 .stations a.active{background:#d3c6b3;text-decoration:underline;text-underline-offset:4px}
+.note-list strong,.note-list small{display:block}
+.note-list small{color:#6d766d;margin-top:2px;font:11px 'Courier New',monospace}
+.note-list button.selected{background:#d3c6b3;border-left:4px solid #a65b3c}
+.note-list button:hover{background:#e2d4c1}
+.filters{align-items:end;flex-wrap:wrap}
