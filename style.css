@@ -43,3 +43,7 @@ button{padding:9px 12px;background:#e7dbca;border:1px solid #273e33;cursor:point
 .settings-grid h2{font:normal 24px Georgia,serif}.settings-grid p{font-size:13px;color:#686f67}
 @media(max-width:700px){.settings-grid{grid-template-columns:1fr}}
 .section-head{max-width:none;margin:0;padding:0;border:0}.mic-panel p{overflow-wrap:anywhere}
+:focus-visible{outline:3px solid #b65e3a;outline-offset:2px}
+button:disabled{opacity:.52;cursor:not-allowed}
+#preview-body{white-space:pre-wrap;overflow-wrap:anywhere}
+.note-list button{display:block;width:100%;text-align:left;margin-bottom:6px}
