@@ -1,3 +1,5 @@
+import {openDB} from './db.js';
+openDB().catch(console.error);
 const stations = ['library','record','settings'];
 const current = new URLSearchParams(location.search).get('view');
 const view = stations.includes(current) ? current : 'library';
