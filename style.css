@@ -1,0 +1,6 @@
+*{box-sizing:border-box}
+body{margin:0;background:#e6dfd2;color:#273a31;font:15px/1.5 Arial,sans-serif}
+header,main{max-width:960px;margin:auto;padding:24px}
+header{border-bottom:1px solid #a1a79a}
+h1{font:normal 34px Georgia,serif;margin:16px 0 0}
+a{color:inherit}
