@@ -1,7 +1,7 @@
 import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
 import {initSettings, refreshStats} from './settings.js';
-import {initRecorder} from './recorder.js';
+import {initRecorder, getDraft, setDraft} from './recorder.js';
 
 let editing = null;
  
@@ -38,10 +38,11 @@ $('#note-form').addEventListener('submit', async event => {
     const note = {id:editing?.id || crypto.randomUUID(), title, body:$('#note-body').value.trim(),
         channel:$('#note-channel').value, favorite:editing?.favorite || 0,
         createdAt:editing?.createdAt || now, updatedAt:now,
-        audio:editing?.audio || null, duration:editing?.duration || 0};
+        audio:getDraft().audio, duration:getDraft().duration};
     await putNote(note);
     editing = null;
     $('#note-form').reset();
+    setDraft(null);
     $('#editor-heading').textContent = 'Leave a note';
     await refreshLibrary(note.id);
     await refreshStats();
@@ -54,21 +55,24 @@ document.addEventListener('rn:edit', event => {
     $('#note-title').value = editing.title;
     $('#note-body').value = editing.body;
     $('#note-channel').value = editing.channel;
+    setDraft(editing.audio, editing.duration);
     $('#editor-heading').textContent = 'Edit note';
     showView('record', true);
 });
 $('#cancel-edit').addEventListener('click', () => {
     editing = null;
     $('#note-form').reset();
+    setDraft(null);
     $('#editor-heading').textContent = 'Leave a note';
     showView('library', true);
 });
 document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEventListener('click', () => {
     editing = null;
     $('#note-form').reset();
+    setDraft(null);
     $('#editor-heading').textContent = 'Leave a note';
 }));
 showView(new URLSearchParams(location.search).get('view'));
 openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });
 initSettings();
-initRecorder();
+initRecorder();   

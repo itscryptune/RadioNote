@@ -3,6 +3,7 @@ import {listNotes, putNote, deleteNote} from './db.js';
 const $ = selector => document.querySelector(selector);
 let notes = [];
 let selectedId = null;
+let playerURL = null;
 export const getSelected = () => notes.find(note => note.id === selectedId) || null;
  
 function render() {
@@ -26,6 +27,11 @@ function render() {
   }
   if (!matches.some(note => note.id === selectedId)) selectedId = null;
   $('#list-count').textContent = `${matches.length} ${matches.length === 1 ? 'note' : 'notes'} here`;
+  if (playerURL) URL.revokeObjectURL(playerURL);
+  playerURL = null;
+  $('#note-audio').pause();
+  $('#note-audio').removeAttribute('src');
+  $('#note-audio').hidden = true;
   const selected = getSelected();
   $('#empty-preview').hidden = !!selected;
   $('#note-preview').hidden = !selected;
@@ -34,6 +40,11 @@ function render() {
   $('#preview-meta').textContent = `${selected.channel.toUpperCase()} / ${new Date(selected.createdAt).toLocaleDateString()}`;
   $('#preview-body').textContent = selected.body || 'No written note.';
   $('#star-note').textContent = selected.favorite ? '★ Unstar' : '☆ Star';
+  if (selected.audio) {
+    playerURL = URL.createObjectURL(selected.audio);
+    $('#note-audio').src = playerURL;
+    $('#note-audio').hidden = false;
+  }
 }
 export async function refreshLibrary(selectId = selectedId) {
   notes = (await listNotes($('#channel-filter').value, $('#favorites-only').checked))
