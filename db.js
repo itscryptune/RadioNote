@@ -40,3 +40,12 @@ export async function listNotes(channel = 'all', starred = false) {
     : starred ? store.index('favorite').getAll(1) : store.getAll();
   return resultOf(request);
 }
+export async function deleteNote(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('notes', 'readwrite');
+    tx.objectStore('notes').delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}

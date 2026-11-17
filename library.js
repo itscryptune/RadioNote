@@ -1,4 +1,4 @@
-import {listNotes} from './db.js';
+import {listNotes, putNote, deleteNote} from './db.js';
  
 const $ = selector => document.querySelector(selector);
 let notes = [];
@@ -53,4 +53,25 @@ $('#favorites-only').addEventListener('change', () => refreshLibrary().catch(con
 $('#edit-note').addEventListener('click', () => {
   const note = getSelected();
   if (note) document.dispatchEvent(new CustomEvent('rn:edit', {detail:note}));
+});
+$('#star-note').addEventListener('click', async () => {
+  const note = getSelected();
+  if (!note) return;
+  try {
+    await putNote({...note, favorite:note.favorite ? 0 : 1, updatedAt:Date.now()});
+    await refreshLibrary(note.id);
+    $('#message').textContent = 'Star updated.';
+    document.dispatchEvent(new Event('rn:changed'));
+  } catch (error) { console.error(error); $('#message').textContent = 'Could not update star.'; }
+});
+$('#delete-note').addEventListener('click', async () => {
+  const note = getSelected();
+  if (!note || !confirm(`Delete "${note.title}"?`)) return;
+  try {
+    await deleteNote(note.id);
+    selectedId = null;
+    await refreshLibrary(null);
+    $('#message').textContent = 'Note deleted.';
+    document.dispatchEvent(new Event('rn:changed'));
+  } catch (error) { console.error(error); $('#message').textContent = 'Could not delete note.'; }
 });
