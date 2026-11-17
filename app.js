@@ -1,5 +1,6 @@
 import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
+let editing = null;
  
 const $ = selector => document.querySelector(selector);
 const stations = ['library', 'record', 'settings'];
@@ -31,15 +32,37 @@ $('#note-form').addEventListener('submit', async event => {
   if (!title) { $('#note-title').focus(); return; }
   const now = Date.now();
   try {
-    await putNote({id:crypto.randomUUID(), title, body:$('#note-body').value.trim(),
-      channel:$('#note-channel').value, favorite:0, createdAt:now, updatedAt:now,
-      audio:null, duration:0});
+    const note = {id:editing?.id || crypto.randomUUID(), title, body:$('#note-body').value.trim(),
+        channel:$('#note-channel').value, favorite:editing?.favorite || 0,
+        createdAt:editing?.createdAt || now, updatedAt:now,
+        audio:editing?.audio || null, duration:editing?.duration || 0};
+    await putNote(note);
+    editing = null;
     $('#note-form').reset();
-    await refreshLibrary();
+    $('#editor-heading').textContent = 'Leave a note';
+    await refreshLibrary(note.id);
     showView('library', true);
-    $('#message').textContent = 'Text note saved.';
+    $('#message').textContent = 'Note saved.';
   } catch (error) { console.error(error); $('#message').textContent = 'Saving failed. Try again.'; }
 });
-$('#cancel-edit').addEventListener('click', () => showView('library', true));
+document.addEventListener('rn:edit', event => {
+    editing = event.detail;
+    $('#note-title').value = editing.title;
+    $('#note-body').value = editing.body;
+    $('#note-channel').value = editing.channel;
+    $('#editor-heading').textContent = 'Edit note';
+    showView('record', true);
+});
+$('#cancel-edit').addEventListener('click', () => {
+    editing = null;
+    $('#note-form').reset();
+    $('#editor-heading').textContent = 'Leave a note';
+    showView('library', true);
+});
+document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEventListener('click', () => {
+    editing = null;
+    $('#note-form').reset();
+    $('#editor-heading').textContent = 'Leave a note';
+}));
 showView(new URLSearchParams(location.search).get('view'));
 openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });

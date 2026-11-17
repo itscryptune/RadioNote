@@ -50,3 +50,7 @@ $('#note-list').addEventListener('click', event => {
 $('#search').addEventListener('input', render);
 $('#channel-filter').addEventListener('change', () => refreshLibrary().catch(console.error));
 $('#favorites-only').addEventListener('change', () => refreshLibrary().catch(console.error));
+$('#edit-note').addEventListener('click', () => {
+  const note = getSelected();
+  if (note) document.dispatchEvent(new CustomEvent('rn:edit', {detail:note}));
+});
