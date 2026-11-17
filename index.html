@@ -50,8 +50,44 @@
       </article>
       </div>
       </section>
-      <section class="screen" data-view="record" hidden><h1>Record</h1><p>Text comes first. The microphone comes later.</p></section>
-      <section class="screen" data-view="settings" hidden><h1>Settings</h1><p>Backup options will live here.</p></section>
+      <section class="screen" data-view="record" hidden>
+      <header class="section-head"><div><small>STATION 02 / STUDIO</small><h1 id="editor-heading">Leave a note</h1></div></header>
+      <div class="studio-grid">
+      <section class="mic-panel">
+            <div class="mic-head">MICROPHONE / <span id="record-state">NOT CONNECTED</span></div>
+            <div class="mic-visual" id="mic-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+            <p class="timer" id="record-timer">00:00</p>
+            <div class="record-controls">
+            <button id="record-start" type="button" disabled>Start recording</button>
+            <button id="record-stop" type="button" disabled>Stop</button>
+            </div>
+            <audio id="draft-audio" controls hidden></audio>
+            <button id="clear-audio" type="button" hidden>Remove audio</button>
+            <p>Microphone recording will be added after the text library works.</p>
+      </section>
+      <form id="note-form" class="note-form">
+            <label for="note-title">TITLE<input id="note-title" required maxlength="90" placeholder="Something to remember"></label>
+            <label for="note-channel">CHANNEL<select id="note-channel"><option value="thoughts">Thoughts</option><option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option></select></label>
+            <label for="note-body">WRITTEN NOTE<textarea id="note-body" maxlength="6000" placeholder="A few words about this note..."></textarea></label>
+            <div class="form-actions"><button id="save-note" type="submit">Save note</button><button id="cancel-edit" type="button">Cancel</button></div>
+      </form>
+      </div>
+      </section>
+      <section class="screen" data-view="settings" hidden>
+      <header class="section-head"><div><small>STATION 03 / MAINTENANCE</small><h1>Settings</h1></div></header>
+      <div class="settings-grid">
+      <section>
+            <h2>Backups</h2><p>Download the archive and bring it back to this browser later.</p>
+            <div class="actions"><button id="export-notes" type="button">Download backup</button><button id="import-notes" type="button">Import backup</button></div>
+            <input id="import-file" type="file" accept=".json,application/json" hidden>
+      </section>
+      <section>
+            <h2>Speech</h2><label><input id="speak-status" type="checkbox"> Read status messages aloud</label>
+            <h2>On this device</h2><p id="library-stats">The archive is not connected yet.</p>
+            <button id="clear-library" type="button">Erase library</button>
+      </section>
+      </div>
+      </section>  
   </main>
 <footer id="message">RadioNote is getting tuned up.</footer>
 </body>
