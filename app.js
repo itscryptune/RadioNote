@@ -1,7 +1,7 @@
 import {openDB, putNote} from './db.js';
 import {refreshLibrary} from './library.js';
 import {initSettings, refreshStats} from './settings.js';
-import {initRecorder, getDraft, setDraft} from './recorder.js';
+import {initRecorder, getDraft, setDraft, isRecording} from './recorder.js';
 import {initSpeech} from './speech.js';
 import {initVoice} from './voice.js';
 import {initBackup} from './backup.js';
@@ -34,6 +34,10 @@ document.querySelectorAll('[data-route]').forEach(link => link.addEventListener(
 window.addEventListener('popstate', () => showView(new URLSearchParams(location.search).get('view')));
 $('#note-form').addEventListener('submit', async event => {
   event.preventDefault();
+  if (isRecording()) {
+    $('#message').textContent = 'Stop recording and wait for CLIP READY before saving.';
+    return;
+  }
   const title = $('#note-title').value.trim();
   if (!title) { $('#note-title').focus(); return; }
   const now = Date.now();
