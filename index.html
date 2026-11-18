@@ -41,8 +41,14 @@
             <p id="list-count">NO NOTES YET</p>
       </aside>
         <section class="receiver" aria-label="Radio dial">
-            <div class="receiver-top"><span>FIELD RECORDER / 001</span><span>ON YOUR DESK</span></div>
-            <div class="frequency"><span>FM</span><strong id="frequency">88.1</strong><span>MHz</span></div>
+            <div class="receiver-top"><span>RADIONOTE / RECEIVER 01</span><span>ON AIR</span></div>
+            <div class="tuner-window">
+                  <div class="band-markers" aria-hidden="true"><span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span></div>
+                  <div class="frequency"><span>FM</span><strong id="frequency">88.1</strong><span>MHz</span></div>
+                  <div class="station-caption">TUNED TO <strong id="radio-station-label">ALL NOTES</strong></div>
+            </div>
+            <div class="speaker-grid" aria-hidden="true"></div>
+            <p class="receiver-help">Choose a station on the left. Select a note to read or play it.</p>
       </section>
       <article class="preview">
             <div class="empty" id="empty-preview"><h2>Nothing on this frequency.</h2><p>When notes exist, they'll show up here.</p></div>
@@ -101,5 +107,3 @@
 <footer id="message" role="status" aria-live="polite">RadioNote is getting tuned up.</footer>
 </body>
 </html>
-
-
