@@ -150,3 +150,53 @@ main{background:linear-gradient(#663923,#452517);
   border-color:#8d6444}
 .preview small{color:#795238;
   font:11px 'Courier New',monospace}
+.station-picker{margin-bottom:15px;
+  padding-bottom:12px;
+  border-bottom:1px solid #b89368}
+.picker-head{display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:9px;
+  font:700 15px Georgia,serif}
+#station-new-note{padding:5px 8px;
+  border:1px solid #805533;
+  border-radius:5px;
+  background:#e8cfaa;
+  font:12px Arial,sans-serif}
+#station-shortcuts{max-height:280px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding-right:3px}
+#station-shortcuts button{display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  text-align:left;
+  border:1px solid #d6b48c;
+  border-radius:5px;
+  padding:7px 9px;
+  background:#f5e3c8;
+  color:#2b2119;
+  font:13px Arial,sans-serif}
+#station-shortcuts button:hover{background:#edcdac}
+#station-shortcuts button.chosen{background:#a74629;
+  color:white;
+  border-color:#7d331f}
+#station-shortcuts small{font:11px 'Courier New',monospace}
+.shelf>label{display:block;
+  font:11px 'Courier New',monospace;
+  margin-bottom:4px}
+.shelf #search{border-radius:4px;
+  background:#fff3df}
+.filters label[for="channel-filter"]{display:none}
+.note-list{max-height:205px;
+  overflow:auto;
+  padding-right:3px}
+.note-list button{background:#f1dbbe;
+  border:1px solid #d8b996;
+  border-radius:5px;
+  color:var(--ink)}
+.note-list button.selected{background:#ebc6a4;
+  border-left:4px solid #a74629}

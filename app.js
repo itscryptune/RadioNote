@@ -5,6 +5,7 @@ import {initRecorder, getDraft, setDraft, isRecording} from './recorder.js';
 import {initSpeech} from './speech.js';
 import {initVoice} from './voice.js';
 import {initBackup} from './backup.js';
+import {initStationUI} from './station-ui.js'
 
 let editing = null;
  
@@ -20,8 +21,7 @@ export function showView(value, push = false) {
       else link.removeAttribute('aria-current');
     }
   });
-  $('#frequency').textContent = {library:'88.1', record:'96.4', settings:'104.2'}[view];
-  if (push) {
+  if (push) { 
     const url = new URL(location.href);
     url.searchParams.set('view', view);
     history.pushState({view}, '', url);
@@ -53,6 +53,7 @@ $('#note-form').addEventListener('submit', async event => {
     $('#editor-heading').textContent = 'Leave a note';
     await refreshLibrary(note.id);
     await refreshStats();
+    document.dispatchEvent(new Event('rn:changed'));
     showView('library', true);
     $('#message').textContent = 'Note saved.';
     document.dispatchEvent(new CustomEvent('rn:announce', {detail:'Note saved.'}));
@@ -87,6 +88,7 @@ initRecorder();
 initSpeech();
 initVoice();
 initBackup();
+initStationUI();
 
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));

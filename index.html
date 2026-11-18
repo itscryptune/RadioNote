@@ -33,13 +33,23 @@
             <input type="search" id="search" placeholder="Search title or words...">
             <div class="filters">
             <label for="channel-filter">CHANNEL
-            <select id="channel-filter"><option value="all">All channels</option><option value="thoughts">Thoughts</option><option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option></select>
+            <select id="channel-filter">
+                  <option value="all">All stations</option>
+                  <option value="physics">Physics</option><option value="mathematics">Mathematics</option>
+                  <option value="chemistry">Chemistry</option><option value="history">History</option>
+                  <option value="programming">Programming</option><option value="thoughts">Thoughts</option>
+                  <option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option>
+            </select>
             </label>
             <label><input type="checkbox" id="favorites-only"> Starred</label>
             </div>
             <ul id="note-list" class="note-list" aria-label="Saved notes"></ul>
             <p id="list-count">NO NOTES YET</p>
       </aside>
+      <div class="station-picker">
+            <div class="picker-head"><strong>STATIONS</strong><button id="station-new-note" type="button" title="New note in this station">+ Note</button></div>
+            <div id="station-shortcuts" role="group" aria-label="Choose a station"></div>
+      </div>
         <section class="receiver" aria-label="Radio dial">
             <div class="receiver-top"><span>RADIONOTE / RECEIVER 01</span><span>ON AIR</span></div>
             <div class="tuner-window">
@@ -82,7 +92,14 @@
       </section>
       <form id="note-form" class="note-form"><button id="voice-dictate" type="button">Dictate into written note</button> 
             <label for="note-title">TITLE<input id="note-title" required maxlength="90" placeholder="Something to remember"></label>
-            <label for="note-channel">CHANNEL<select id="note-channel"><option value="thoughts">Thoughts</option><option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option></select></label>
+            <label for="note-channel">CHANNEL
+                  <select id="note-channel">
+                        <option value="physics">Physics</option><option value="mathematics">Mathematics</option>
+                        <option value="chemistry">Chemistry</option><option value="history">History</option>
+                        <option value="programming">Programming</option><option value="thoughts">Thoughts</option>
+                        <option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option>
+                  </select>
+            </label>
             <label for="note-body">WRITTEN NOTE<textarea id="note-body" maxlength="6000" placeholder="A few words about this note..."></textarea></label>
             <div class="form-actions"><button id="save-note" type="submit">Save note</button><button id="cancel-edit" type="button">Cancel</button></div>
       </form>
