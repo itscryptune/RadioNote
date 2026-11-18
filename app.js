@@ -4,6 +4,7 @@ import {initSettings, refreshStats} from './settings.js';
 import {initRecorder, getDraft, setDraft} from './recorder.js';
 import {initSpeech} from './speech.js';
 import {initVoice} from './voice.js';
+import {initBackup} from './backup.js';
 
 let editing = null;
  
@@ -81,3 +82,4 @@ initSettings();
 initRecorder(); 
 initSpeech();
 initVoice();
+initBackup();
