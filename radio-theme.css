@@ -200,3 +200,20 @@ main{background:linear-gradient(#663923,#452517);
   color:var(--ink)}
 .note-list button.selected{background:#ebc6a4;
   border-left:4px solid #a74629}
+.tuner-controls{display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:12px auto 0}
+.tuner-controls button{min-width:50px;
+  padding:12px 13px;
+  border:2px solid #56331f;
+  border-radius:7px;
+  background:linear-gradient(#fae7ca,#c99e6d);
+  box-shadow:0 3px 0 #7f5334;
+  color:#2f2016;
+  font:700 14px Arial,sans-serif}
+.tuner-controls #radio-play{background:linear-gradient(#e47446,#b43d22);
+  color:#fff5e6;
+  min-width:92px}
+.tuner-controls button:active{transform:translateY(2px);
+  box-shadow:0 1px 0 #7f5334}

@@ -71,6 +71,24 @@ export function initStationUI() {
     $('#voice-feedback').textContent = `New ${found[1]} note ready`;
   });
   document.addEventListener('rn:changed', () => counts().catch(console.error));
+  const order = ['all', ...stations.map(item => item[0])];
+  function step(direction) {
+    const index = order.indexOf(active);
+    choose(order[(index + direction + order.length) % order.length]);
+  }
+  $('#tune-prev').addEventListener('click', () => step(-1));
+  $('#tune-next').addEventListener('click', () => step(1));
+  $('#radio-play').addEventListener('click', async () => {
+    const audio = $('#note-audio');
+    if (!$('#note-preview').hidden && audio.src) {
+      try {
+        if (audio.paused) await audio.play();
+        else audio.pause();
+      } catch (error) { $('#message').textContent = `Playback failed: ${error.message}`; }
+    } else if (!$('#note-preview').hidden && $('#preview-body').textContent.trim()) {
+      $('#read-note').click();
+    } else $('#message').textContent = 'Select a note first.';
+  });
   tune($('#channel-filter').value);
   counts().catch(console.error);
 }
