@@ -1,10 +1,10 @@
-const CACHE = 'radionote-shell-v1';
+const CACHE = 'radionote-shell-v2';
 self.addEventListener('install', event => event.waitUntil((async () => {
   const base = self.registration.scope;
   const page = await fetch(base, {cache:'reload'});
-  if (!page.ok) throw new Error('Could not cache app shell');
-  const markup = await page.clone().text();
-  const assets = [...markup.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)]
+  if (!page.ok) throw new Error('Could not cache RadioNote');
+  const html = await page.clone().text();
+  const assets = [...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)]
     .map(match => new URL(match[1], base).href);
   const cache = await caches.open(CACHE);
   await cache.put(base, page);
@@ -12,19 +12,22 @@ self.addEventListener('install', event => event.waitUntil((async () => {
   await self.skipWaiting();
 })()));
 self.addEventListener('activate', event => event.waitUntil((async () => {
-  for (const name of await caches.keys()) if (name.startsWith('radionote-shell-') && name !== CACHE) await caches.delete(name);
+  for (const key of await caches.keys()) if (key.startsWith('radionote-shell-') && key !== CACHE) await caches.delete(key);
   await self.clients.claim();
 })()));
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    if (event.request.mode === 'navigate') {
+    const isPage = event.request.mode === 'navigate';
+    const isCode = ['script','style'].includes(event.request.destination);
+    const key = isPage ? self.registration.scope : event.request;
+    if (isPage || isCode) {
       try {
         const response = await fetch(event.request);
-        if (response.ok) await cache.put(self.registration.scope, response.clone());
+        if (response.ok) await cache.put(key, response.clone());
         return response;
-      } catch { return await cache.match(self.registration.scope) || Response.error(); }
+      } catch { return await cache.match(key) || Response.error(); }
     }
     const saved = await cache.match(event.request);
     if (saved) return saved;
