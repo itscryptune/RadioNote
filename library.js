@@ -27,11 +27,13 @@ function render() {
   }
   if (!matches.some(note => note.id === selectedId)) selectedId = null;
   $('#list-count').textContent = `${matches.length} ${matches.length === 1 ? 'note' : 'notes'} here`;
+  const player = $('#note-audio');
+  player.pause();
+  player.removeAttribute('src');
+  player.load();
   if (playerURL) URL.revokeObjectURL(playerURL);
   playerURL = null;
-  $('#note-audio').pause();
-  $('#note-audio').removeAttribute('src');
-  $('#note-audio').hidden = true;
+  player.hidden = true;
   const selected = getSelected();
   $('#empty-preview').hidden = !!selected;
   $('#note-preview').hidden = !selected;
@@ -40,10 +42,11 @@ function render() {
   $('#preview-meta').textContent = `${selected.channel.toUpperCase()} / ${new Date(selected.createdAt).toLocaleDateString()}`;
   $('#preview-body').textContent = selected.body || 'No written note.';
   $('#star-note').textContent = selected.favorite ? '★ Unstar' : '☆ Star';
-  if (selected.audio) {
+  if (selected.audio instanceof Blob && selected.audio.size) {
     playerURL = URL.createObjectURL(selected.audio);
-    $('#note-audio').src = playerURL;
-    $('#note-audio').hidden = false;
+    player.src = playerURL;
+    player.hidden = false;
+    player.load();
   }
 }
 export async function refreshLibrary(selectId = selectedId) {
@@ -85,4 +88,8 @@ $('#delete-note').addEventListener('click', async () => {
     $('#message').textContent = 'Note deleted.';
     document.dispatchEvent(new Event('rn:changed'));
   } catch (error) { console.error(error); $('#message').textContent = 'Could not delete note.'; }
+});
+$('#note-audio').addEventListener('error', () => {
+  if ($('#note-audio').getAttribute('src'))
+    $('#message').textContent = 'Could not play this saved clip. Try its original recording browser or check the file.';
 });
