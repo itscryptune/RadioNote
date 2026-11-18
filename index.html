@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
-<link rel="stylesheet" href="./style.css">
-<script type="module" src="./app.js"></script> 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RadioNote</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
 </head>
 <body>
   <header class="topbar">
@@ -63,13 +63,15 @@
             <div class="mic-head">MICROPHONE / <span id="record-state">NOT CONNECTED</span></div>
             <div class="mic-visual" id="mic-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
             <p class="timer" id="record-timer">00:00</p>
+            <label for="mic-device" class="mic-label">INPUT DEVICE</label>
+            <select id="mic-device"><option value="">Default microphone</option></select>
+            <p id="mic-level" role="status">INPUT LEVEL —</p>
             <div class="record-controls">
             <button id="record-start" type="button" disabled>Start recording</button>
             <button id="record-stop" type="button" disabled>Stop</button>
             </div>
             <audio id="draft-audio" controls hidden></audio>
             <button id="clear-audio" type="button" hidden>Remove audio</button>
-            <p>Microphone recording will be added after the text library works.</p>
       </section>
       <form id="note-form" class="note-form"><button id="voice-dictate" type="button">Dictate into written note</button> 
             <label for="note-title">TITLE<input id="note-title" required maxlength="90" placeholder="Something to remember"></label>

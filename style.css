@@ -57,3 +57,7 @@ button:disabled{opacity:.52;cursor:not-allowed}
 .voice-panel>div{flex:1;min-width:210px}.voice-panel p{margin:3px 0;font-size:12px}
 #voice-feedback{font:11px 'Courier New',monospace;color:#945b42}
 @media(max-width:700px){.voice-panel{margin:12px}}
+.mic-label{display:block;margin:10px 0 5px;font:11px 'Courier New',monospace}
+#mic-device{width:100%;padding:8px;background:#eee5d7;border:1px solid #a6a697}
+#mic-level{font:11px 'Courier New',monospace;min-height:18px}
+#draft-audio,#note-audio{max-width:100%;margin:10px 0}
