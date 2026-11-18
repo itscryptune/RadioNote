@@ -217,3 +217,73 @@ main{background:linear-gradient(#663923,#452517);
   min-width:92px}
 .tuner-controls button:active{transform:translateY(2px);
   box-shadow:0 1px 0 #7f5334}
+.voice-panel{background:#281a15;
+  color:#fae8cb;
+  border:3px solid #45291d;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:0 auto;
+  padding:12px 18px}
+.voice-panel strong{font:700 12px 'Courier New',monospace;
+  letter-spacing:1px}
+.voice-panel p{margin:3px 0 0;
+  color:#dfc6a4;
+  font:12px/1.4 Arial,sans-serif}
+#voice-command{background:#bc5231;
+  border:1px solid #f4ae77;
+  color:white;
+  border-radius:6px;
+  font-weight:700;
+  min-width:135px}
+#voice-feedback{font:12px 'Courier New',monospace;
+  max-width:240px;
+  overflow-wrap:anywhere}
+footer{background:#382116;
+  color:#fae7ca;
+  border:3px solid #31180f;
+  border-radius:0 0 18px 18px;
+  margin:0 auto;
+  padding:12px 20px;
+  min-height:42px}
+body{display:flex;
+  flex-direction:column}
+.topbar{order:0}.stations{order:1}main{order:2;
+  width:100%}.voice-panel{order:3;
+  width:100%}footer{order:4;
+  width:100%}
+.studio-grid,.settings-grid{gap:18px}
+.studio-grid>*,.settings-grid>section{background:#f4dfbd;
+  border:3px solid #a4764c;
+  border-radius:12px;
+  padding:20px;
+  color:#2e2218;
+  min-width:0}
+.studio-grid .mic-panel{background:#29201b;
+  color:#f2d4aa;
+  border-color:#bd8e5d}
+.mic-visual span{background:#e38a4d}
+.note-form input,.note-form select,.note-form textarea{background:#fff4e2;
+  border:1px solid #9b7853;
+  border-radius:5px;
+  color:#2e2218}
+.note-form textarea{min-height:190px;
+  resize:vertical}
+.note-form button,.record-controls button,.settings-grid button,.actions button{border-radius:6px}
+#save-note,#record-start{background:#b9512c;
+  color:#fff4e6}
+#mic-device,#draft-audio,#note-audio{max-width:100%}
+@media(max-width:1100px){.library-grid{grid-template-columns:minmax(190px,.85fr) minmax(290px,1.25fr)}.preview{grid-column:1/-1}.note-list{max-height:180px}}
+@media(max-width:720px){body{padding:8px}.topbar{border-radius:13px 13px 0 0;
+  padding:13px}.brand{font-size:21px}.signal{display:none}.stations{padding:5px 8px 10px}.stations a{padding:8px 10px;
+  flex:1;
+  text-align:center;
+  font-size:12px}main{padding:12px 9px;
+  min-height:0}.library-grid{grid-template-columns:1fr}.receiver,.preview{grid-column:1}.shelf{order:0}.receiver{order:1;
+  min-height:360px}.preview{order:2}.studio-grid,.settings-grid{grid-template-columns:1fr}.voice-panel{flex-wrap:wrap;
+  padding:12px}.voice-panel>div{flex-basis:100%}.voice-panel #voice-command{flex:1}.voice-panel #voice-feedback{flex:1}.section-head a{font-size:12px}.frequency strong{font-size:52px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;
+  animation:none!important;
+  transition:none!important}}
