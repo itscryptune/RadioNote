@@ -37,7 +37,7 @@ function render() {
   const selected = getSelected();
   $('#empty-preview').hidden = !!selected;
   $('#note-preview').hidden = !selected;
-  if (!selected) return;
+  if (!selected) { $('.library-grid').classList.remove('reading'); return; }
   $('#preview-title').textContent = selected.title;
   $('#preview-meta').textContent = `${selected.channel.toUpperCase()} / ${new Date(selected.createdAt).toLocaleDateString()}`;
   $('#preview-body').textContent = selected.body || 'No written note.';
@@ -60,8 +60,10 @@ $('#note-list').addEventListener('click', event => {
   if (!button) return;
   selectedId = button.dataset.id;
   render();
+  $('.library-grid').classList.add('reading');
 });
 $('#search').addEventListener('input', render);
+$('#reader-back').addEventListener('click', () => $('.library-grid').classList.remove('reading'));
 $('#channel-filter').addEventListener('change', () => refreshLibrary().catch(console.error));
 $('#favorites-only').addEventListener('change', () => refreshLibrary().catch(console.error));
 $('#edit-note').addEventListener('click', () => {
