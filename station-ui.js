@@ -87,11 +87,8 @@ async function rebuildStations() {
 }
 
 
-export function initStationUI() {
-  rebuildStations().catch(error => {
-    console.error('Station loading failed:', error);
-    $('#message').textContent = 'Stations could not load. Check the browser console.';
-  });
+export async function initStationUI() {
+  await rebuildStations();
   $('#channel-filter').addEventListener('change', () => tune($('#channel-filter').value));
   $('#station-add').addEventListener('click', async () => {
     const name = prompt('New station name:')?.trim();
@@ -147,3 +144,4 @@ export function initStationUI() {
   counts().catch(console.error);
 }
         
+

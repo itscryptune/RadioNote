@@ -82,14 +82,19 @@ document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEven
     $('#editor-heading').textContent = 'Leave a note';
 }));
 showView(new URLSearchParams(location.search).get('view'));
-openDB().then(() => refreshLibrary()).catch(error => { console.error(error); $('#message').textContent = 'Archive unavailable.'; });
 initSettings();
-initRecorder(); 
+initRecorder();
 initSpeech();
 initVoice();
 initBackup();
-initStationUI();
-
+openDB().then(async () => {
+  await initStationUI();
+  await refreshLibrary();
+  await refreshStats();
+}).catch(error => {
+  console.error(error);
+  $('#message').textContent = 'Archive unavailable. Close other RadioNote tabs and reload.';
+});
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
 }
