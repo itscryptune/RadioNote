@@ -287,3 +287,8 @@ body{display:flex;
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;
   animation:none!important;
   transition:none!important}}
+.station-entry{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:5px;margin:4px 0;align-items:stretch}
+.station-entry>button:first-child{text-align:left;min-width:0}
+.station-entry>button:not(:first-child){font-size:11px;padding:5px 7px}
+.station-entry small{float:right}
+.picker-head span{display:flex;gap:6px}

@@ -35,10 +35,6 @@
             <label for="channel-filter">CHANNEL
             <select id="channel-filter">
                   <option value="all">All stations</option>
-                  <option value="physics">Physics</option><option value="mathematics">Mathematics</option>
-                  <option value="chemistry">Chemistry</option><option value="history">History</option>
-                  <option value="programming">Programming</option><option value="thoughts">Thoughts</option>
-                  <option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option>
             </select>
             </label>
             <label><input type="checkbox" id="favorites-only"> Starred</label>
@@ -47,7 +43,7 @@
             <p id="list-count">NO NOTES YET</p>
       </aside>
       <div class="station-picker">
-            <div class="picker-head"><strong>STATIONS</strong><button id="station-new-note" type="button" title="New note in this station">+ Note</button></div>
+            <div class="picker-head"><strong>STATIONS</strong><span><button id="station-add" type="button">+ Station</button><button id="station-new-note" type="button" title="New note in this station">+ Note</button></span></div>
             <div id="station-shortcuts" role="group" aria-label="Choose a station"></div>
       </div>
         <section class="receiver" aria-label="Radio dial">
@@ -98,10 +94,7 @@
             <label for="note-title">TITLE<input id="note-title" required maxlength="90" placeholder="Something to remember"></label>
             <label for="note-channel">CHANNEL
                   <select id="note-channel">
-                        <option value="physics">Physics</option><option value="mathematics">Mathematics</option>
-                        <option value="chemistry">Chemistry</option><option value="history">History</option>
-                        <option value="programming">Programming</option><option value="thoughts">Thoughts</option>
-                        <option value="ideas">Ideas</option><option value="moments">Moments</option><option value="work">Work</option>
+                        <option value="unfiled">Unsorted</option>
                   </select>
             </label>
             <label for="note-body">WRITTEN NOTE<textarea id="note-body" maxlength="6000" placeholder="A few words about this note..."></textarea></label>
@@ -128,3 +121,5 @@
 <footer id="message" role="status" aria-live="polite">RadioNote is getting tuned up.</footer>
 </body>
 </html>
+
+

@@ -1,12 +1,7 @@
-import {listNotes} from './db.js';
+import {listNotes, listStations, putStation, deleteStation} from './db.js';
  
 const $ = selector => document.querySelector(selector);
-const stations = [
-  ['physics','Physics','101.1'], ['mathematics','Mathematics','102.4'],
-  ['chemistry','Chemistry','103.2'], ['history','History','104.8'],
-  ['programming','Programming','106.2'], ['thoughts','Thoughts','88.7'],
-  ['ideas','Ideas','89.5'], ['moments','Moments','90.3'], ['work','Work','91.6']
-];
+let stations = [];
 let active = 'all';
  
 function tune(channel) {
@@ -36,23 +31,78 @@ async function counts() {
     button.querySelector('small').textContent = total;
   });
 }
- 
-export function initStationUI() {
-  const root = $('#station-shortcuts');
-  const items = [['all','All notes','88.1'], ...stations];
-  for (const [key, name] of items) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.station = key;
-    button.innerHTML = `<span></span><small></small>`;
-    button.querySelector('span').textContent = name;
-    button.addEventListener('click', () => choose(key));
-    root.append(button);
+async function rebuildStations() {
+  const saved = await listStations();
+  saved.sort((a, b) => a.createdAt - b.createdAt || a.name.localeCompare(b.name));
+  stations = saved.map((item, i) => [item.id, item.name, (88.1 + i * 1.7).toFixed(1)]);
+  const currentFilter = $('#channel-filter').value;
+  const currentNote = $('#note-channel').value;
+  for (const select of [$('#channel-filter'), $('#note-channel')]) {
+    const items = select.id === 'channel-filter'
+      ? [['all', 'All stations'], ['unfiled', 'Unsorted'], ...stations]
+      : [['unfiled', 'Unsorted'], ...stations];
+    select.replaceChildren();
+    for (const [id, name] of items) select.add(new Option(name, id));
   }
+  $('#channel-filter').value = [...$('#channel-filter').options].some(x => x.value === currentFilter) ? currentFilter : 'all';
+  $('#note-channel').value = [...$('#note-channel').options].some(x => x.value === currentNote) ? currentNote : 'unfiled';
+  const root = $('#station-shortcuts');
+  root.replaceChildren();
+  for (const [id, name] of [['all', 'All notes'], ['unfiled', 'Unsorted'], ...stations]) {
+    const row = document.createElement('div');
+    row.className = 'station-entry';
+    const chooseButton = document.createElement('button');
+    chooseButton.type = 'button';
+    chooseButton.dataset.station = id;
+    chooseButton.innerHTML = '<span></span><small></small>';
+    chooseButton.querySelector('span').textContent = name;
+    chooseButton.addEventListener('click', () => choose(id));
+    row.append(chooseButton);
+    if (id !== 'all' && id !== 'unfiled') {
+      const rename = document.createElement('button');
+      rename.type = 'button'; rename.textContent = 'Edit'; rename.title = `Rename ${name}`;
+      rename.addEventListener('click', async () => {
+        const next = prompt('Station name:', name)?.trim();
+        if (!next || next === name) return;
+        if (saved.some(item => item.id !== id && item.name.toLowerCase() === next.toLowerCase())) return alert('This station name already exists.');
+        await putStation({...saved.find(item => item.id === id), name:next});
+        await rebuildStations();
+      });
+      const remove = document.createElement('button');
+      remove.type = 'button'; remove.textContent = 'Delete'; remove.title = `Delete ${name}`;
+      remove.addEventListener('click', async () => {
+        if (!confirm(`Delete station "${name}"? Its notes will move to Unsorted.`)) return;
+        await deleteStation(id);
+        if (active === id) active = 'all';
+        await rebuildStations();
+        choose(active, false);
+        document.dispatchEvent(new Event('rn:changed'));
+      });
+      row.append(rename, remove);
+    }
+    root.append(row);
+  }
+  tune($('#channel-filter').value);
+  await counts();
+}
+
+
+export function initStationUI() {
+  rebuildStations().catch(console.error);
   $('#channel-filter').addEventListener('change', () => tune($('#channel-filter').value));
+  $('#station-add').addEventListener('click', async () => {
+    const name = prompt('New station name:')?.trim();
+    if (!name) return;
+    const existing = await listStations();
+    if (existing.some(item => item.name.toLowerCase() === name.toLowerCase())) return alert('Station already exists.');
+    const id = crypto.randomUUID();
+    await putStation({id, name, createdAt:Date.now()});
+    await rebuildStations();
+    choose(id);
+  });
   $('#station-new-note').addEventListener('click', () => {
     document.querySelector('main a[data-route="record"]')?.click();
-    $('#note-channel').value = active === 'all' ? 'physics' : active;
+    $('#note-channel').value = active === 'all' ? 'unfiled' : active;
     $('#note-title').focus();
   });
   document.addEventListener('rn:open-station', event => {
@@ -70,9 +120,10 @@ export function initStationUI() {
     $('#station-new-note').click();
     $('#voice-feedback').textContent = `New ${found[1]} note ready`;
   });
+  document.addEventListener('rn:stations-changed', () => rebuildStations().catch(console.error));
   document.addEventListener('rn:changed', () => counts().catch(console.error));
-  const order = ['all', ...stations.map(item => item[0])];
   function step(direction) {
+    const order = ['all', 'unfiled', ...stations.map(item => item[0])];
     const index = order.indexOf(active);
     choose(order[(index + direction + order.length) % order.length]);
   }
@@ -92,3 +143,4 @@ export function initStationUI() {
   tune($('#channel-filter').value);
   counts().catch(console.error);
 }
+        
