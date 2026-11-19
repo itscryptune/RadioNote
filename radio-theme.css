@@ -317,3 +317,25 @@ main,.topbar,.stations,.voice-panel,#message{width:min(1440px,calc(100% - 32px))
   .library-grid>.receiver{order:1}
   .library-grid>.station-picker{order:2}
   .library-grid>.shelf,.library-grid>.preview{order:3}}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 20px}
+.topbar .stations{display:flex;align-items:center;justify-content:center;gap:6px;width:auto;max-width:none;margin:0;padding:0;background:transparent;border:0;box-shadow:none}
+.topbar .stations a{white-space:nowrap;padding:9px 14px}
+.topbar .brand{flex:0 1 auto}
+.voice-panel{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.voice-panel>div{min-width:0;flex:1}
+.voice-panel p{margin:5px 0 0;line-height:1.45}
+.receiver{display:flex;flex-direction:column;justify-content:space-between}
+.tuner-window{width:100%}
+.tuner-controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.studio-grid{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(300px,1.1fr);gap:15px}
+.mic-panel,.note-form{min-width:0}
+.note-form{display:grid;gap:12px;align-content:start}
+.note-form label{display:grid;gap:6px;margin:0}
+.note-form input,.note-form textarea,.note-form select,.mic-panel select{width:100%;max-width:100%;box-sizing:border-box}
+.note-form textarea{min-height:200px;resize:vertical}
+.record-controls,.form-actions{display:flex;gap:9px;flex-wrap:wrap}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.settings-grid>section{min-width:0}
+@media(max-width:1000px){.topbar .signal{display:none}}
+@media(max-width:850px){.studio-grid,.settings-grid{grid-template-columns:1fr}.voice-panel{align-items:flex-start;flex-wrap:wrap}}
+@media(max-width:620px){.topbar{gap:10px;padding:12px}.topbar .stations{width:100%;flex-wrap:wrap}.topbar .stations a{flex:1;padding:8px 10px}.voice-panel{gap:10px}}
