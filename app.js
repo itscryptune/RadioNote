@@ -27,9 +27,24 @@ export function showView(value, push = false) {
     history.pushState({view}, '', url);
   }
 }
+function compose(channel = 'unfiled') {
+  if (isRecording()) {
+    $('#message').textContent = 'Stop recording before opening another note.';
+    return;
+  }
+  editing = null;
+    $('#note-form').reset();
+    setDraft(null);
+    $('#editor-heading').textContent = 'Leave a note';
+    $('#note-channel').value = channel;
+    showView('record', true);
+    $('#note-title').focus();
+}
 document.querySelectorAll('[data-route]').forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
-  showView(link.dataset.route, true);
+  if (link.dataset.route === 'record')
+    compose(activeStation() === 'all' ? 'unfiled' : activeStation());
+  else showView(link.dataset.route, true);
 }));
 window.addEventListener('popstate', () => showView(new URLSearchParams(location.search).get('view')));
 $('#note-form').addEventListener('submit', async event => {
@@ -68,19 +83,20 @@ document.addEventListener('rn:edit', event => {
     $('#editor-heading').textContent = 'Edit note';
     showView('record', true);
 });
+document.addEventListener('rn:compose', event => {
+  compose(event.detail?.channel || 'unfiled');
+});
 $('#cancel-edit').addEventListener('click', () => {
+    if (isRecording()) {
+      $('#message').textContent = 'Stop recording before leaving the editor.';
+      return;
+    }
     editing = null;
     $('#note-form').reset();
     setDraft(null);
     $('#editor-heading').textContent = 'Leave a note';
     showView('library', true);
 });
-document.querySelectorAll('a[data-route="record"]').forEach(link => link.addEventListener('click', () => {
-    editing = null;
-    $('#note-form').reset();
-    setDraft(null);
-    $('#editor-heading').textContent = 'Leave a note';
-}));
 showView(new URLSearchParams(location.search).get('view'));
 initSettings();
 initRecorder();

@@ -107,9 +107,7 @@ export async function initStationUI() {
     choose(id);
   });
   $('#station-new-note').addEventListener('click', () => {
-    document.querySelector('main a[data-route="record"]')?.click();
-    $('#note-channel').value = active === 'all' ? 'unfiled' : active;
-    $('#note-title').focus();
+    document.dispatchEvent(new CustomEvent('rn:compose', { detail:{channel:active === 'all' ? 'unfiled' : active} }));
   });
   document.addEventListener('rn:open-station', event => {
     const name = String(event.detail || '').trim().toLowerCase();
