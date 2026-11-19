@@ -58,7 +58,7 @@ $('#note-form').addEventListener('submit', async event => {
   const now = Date.now();
   try {
     const note = {id:editing?.id || crypto.randomUUID(), title, body:$('#note-body').value.trim(),
-        channel:$('#note-channel').value, favorite:editing?.favorite || 0,
+        channel:$('#note-channel').value || 'unfiled', favorite:editing?.favorite || 0,
         createdAt:editing?.createdAt || now, updatedAt:now,
         audio:getDraft().audio, duration:getDraft().duration};
     await putNote(note);
@@ -67,6 +67,9 @@ $('#note-form').addEventListener('submit', async event => {
     setDraft(null);
     $('#editor-heading').textContent = 'Leave a note';
     await refreshLibrary(note.id);
+    setStation(note.channel);
+    $('#search').value = '';
+    $('#favorites-only').checked = false;
     await refreshStats();
     document.dispatchEvent(new Event('rn:changed'));
     showView('library', true);
