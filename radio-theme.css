@@ -339,3 +339,7 @@ main,.topbar,.stations,.voice-panel,#message{width:min(1440px,calc(100% - 32px))
 @media(max-width:1000px){.topbar .signal{display:none}}
 @media(max-width:850px){.studio-grid,.settings-grid{grid-template-columns:1fr}.voice-panel{align-items:flex-start;flex-wrap:wrap}}
 @media(max-width:620px){.topbar{gap:10px;padding:12px}.topbar .stations{width:100%;flex-wrap:wrap}.topbar .stations a{flex:1;padding:8px 10px}.voice-panel{gap:10px}}
+#quick-voice{border-radius:50%;width:42px;min-width:42px;height:42px;padding:0;flex:0 0 auto;background:#3b2117;color:#ffe2b7;border:1px solid #bd8757;font-size:19px}
+#quick-voice[aria-pressed="true"]{background:#b84b2c;color:#fff}
+#quick-voice:disabled{opacity:.45;cursor:not-allowed}
+#quick-voice:focus-visible{outline:3px solid #e9a65b;outline-offset:3px}

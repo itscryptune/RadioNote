@@ -7,6 +7,12 @@ function controls() {
   $('#voice-command').disabled = !Recognizer || recorderBusy;
   $('#voice-dictate').disabled = !Recognizer || recorderBusy;
   $('#voice-command').textContent = phase === 'idle' ? 'Voice command' : 'Stop listening';
+  const quick = $('#quick-voice');
+  if (quick) {
+    quick.disabled = !Recognizer || recorderBusy;
+    quick.setAttribute('aria-pressed', String(phase !== 'idle'));
+    quick.title = phase === 'idle' ? 'Voice command' : 'Stop listening';
+  }
   const busy = phase !== 'idle';
   if (busy !== lastBusy) {
     lastBusy = busy;
@@ -20,6 +26,13 @@ function runCommand(words) {
   const command = words.toLowerCase().trim().replace(/[.!?]+$/, '');
   if (command === 'open library') openStation('library');
   else if (command === 'new note') document.querySelector('main a[data-route="record"]')?.click();
+  else if (/^(open|switch to) .+ station$/.test(command)) {
+    const name = command.replace(/^(open|switch to) /, '').replace(/ station$/, '').trim();
+    document.dispatchEvent(new CustomEvent('rn:open-station', {detail:name}));
+  } else if (/^(?:add|create)(?: a)?(?: new)? note in .+$/.test(command) || /^new note in .+$/.test(command)) {
+    const name = command.replace(/^(?:(?:add|create)(?: a)?(?: new)? note|new note) in /, '').replace(/ station$/, '').trim();
+    document.dispatchEvent(new CustomEvent('rn:new-station-note', {detail:name}));
+  }
   else if (command === 'open settings') openStation('settings');
   else if (command.startsWith('search ')) {
     openStation('library');
@@ -58,6 +71,7 @@ function start(nextMode) {
   catch (error) { console.error(error); phase = 'idle'; controls(); feedback(`${error.name}: ${error.message}`); }
 }
 export function initVoice() {
+  $('#quick-voice')?.addEventListener('click', () => $('#voice-command').click());
   if (!Recognizer) {
     $('#voice-command').disabled = true;
     $('#voice-dictate').disabled = true;
