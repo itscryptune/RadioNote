@@ -1,4 +1,4 @@
-import {listNotes, putNote} from './db.js';
+import {listNotes, putNote, listStations, putStation} from './db.js';
 import {refreshLibrary} from './library.js';
 import {refreshStats} from './settings.js';
  
@@ -23,12 +23,13 @@ export function initBackup() {
   $('#export-notes').addEventListener('click', async () => {
     try {
       const notes = await listNotes();
+      const stations = await listStations();
       const records = [];
       for (const note of notes) {
         const {audio, ...rest} = note;
         records.push({...rest, audioData:audio ? await toDataURL(audio) : null});
       }
-      const json = JSON.stringify({format:'radionote', version:1, exportedAt:new Date().toISOString(), records}, null, 2);
+      const json = JSON.stringify({format:'radionote', version:2, exportedAt:new Date().toISOString(), stations, records}, null, 2);
       const url = URL.createObjectURL(new Blob([json], {type:'application/json'}));
       const link = document.createElement('a');
       link.href = url;
@@ -44,25 +45,34 @@ export function initBackup() {
     if (!file) return;
     try {
       const data = JSON.parse(await file.text());
-      if (data?.format !== 'radionote' || data?.version !== 1 || !Array.isArray(data.records)) throw new Error('Unsupported RadioNote backup');
+      if (data?.format !== 'radionote' || data?.version !== 2 || !Array.isArray(data.records)) throw new Error('Unsupported RadioNote backup');
+
+      if (!Array.isArray(data.stations)) throw new Error('Missing stations in backup');
+      const incomingStations = data.stations.map(item => {
+        if (!item || typeof item.id !== 'string' || !item.id || typeof item.name !== 'string' || !item.name.trim()) throw new Error('Invalid station');
+        return {id:item.id, name:item.name.trim(), createdAt:Number.isFinite(item.createdAt) ? item.createdAt : Date.now()};
+      });
+
       const records = data.records.map(row => {
         if (!row || typeof row.id !== 'string' || typeof row.title !== 'string' || !row.title.trim() ||
-            (typeof row.channel !== 'string' || !row.channel.trim()) || typeof row.body !== 'string' ||
+            !['thoughts','ideas','moments','work'].includes(row.channel) || typeof row.body !== 'string' ||
             !Number.isFinite(row.createdAt) || !Number.isFinite(row.updatedAt) ||
             !(row.audioData === null || row.audioData === undefined || typeof row.audioData === 'string')) throw new Error('Invalid note data');
         const {audioData, audio, ...rest} = row;
         return {...rest, favorite:row.favorite ? 1 : 0, audio:audioData ? fromDataURL(audioData) : null};
       });
       if (!confirm(`Import ${records.length} notes? IDs already in this browser will be overwritten.`)) return;
+
+      for (const station of incomingStations) await putStation(station);
       for (const note of records) await putNote(note);
       $('#channel-filter').value = 'all';
       $('#favorites-only').checked = false;
       $('#search').value = '';
       await refreshLibrary(null);
       await refreshStats();
+      document.dispatchEvent(new Event('rn:stations-changed'));
       $('#message').textContent = `Imported ${records.length} notes.`;
     } catch (error) { console.error(error); $('#message').textContent = `Import stopped: ${error.message}`; }
     finally { event.target.value = ''; }
   });
 }
-
