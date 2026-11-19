@@ -5,6 +5,13 @@ export function openDB() {
     const request = indexedDB.open('radionote', 3);
     request.onupgradeneeded = event => {
       const db = request.result;
+      const notes = db.objectStoreNames.contains('notes')
+        ? request.transaction.objectStore('notes')
+        : db.createObjectStore('notes', {keyPath:'id'});
+      for (const [name, key] of [['channel', 'channel'], ['favorite', 'favorite'],['channelFavorite', ['channel', 'favorite']]
+      ]) { if (!notes.indexNames.contains(name)) notes.createIndex(name, key);}
+      if (!db.objectStoreNames.contains('settings'))
+        db.createObjectStore('settings', {keyPath:'key'});
       if (event.oldVersion === 0) {
         const notes = db.createObjectStore('notes', {keyPath:'id'});
         notes.createIndex('channel', 'channel');
