@@ -3,6 +3,12 @@ import {listNotes, listStations, putStation, deleteStation} from './db.js';
 const $ = selector => document.querySelector(selector);
 let stations = [];
 let active = 'all';
+export const activeStation = () => active;
+export function setStation(channel) {
+  if (!['all', 'unfiled', ...stations.map(item => item[0])].includes(channel)) channel = 'all';
+  $('#channel-filter').value = channel;
+  tune(channel);
+}
  
 function tune(channel) {
   active = channel;
@@ -144,4 +150,6 @@ export async function initStationUI() {
   counts().catch(console.error);
 }
         
+
+
 
