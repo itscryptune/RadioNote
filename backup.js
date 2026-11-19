@@ -47,7 +47,7 @@ export function initBackup() {
       if (data?.format !== 'radionote' || data?.version !== 1 || !Array.isArray(data.records)) throw new Error('Unsupported RadioNote backup');
       const records = data.records.map(row => {
         if (!row || typeof row.id !== 'string' || typeof row.title !== 'string' || !row.title.trim() ||
-            !['thoughts','ideas','moments','work'].includes(row.channel) || typeof row.body !== 'string' ||
+            (typeof row.channel !== 'string' || !row.channel.trim()) || typeof row.body !== 'string' ||
             !Number.isFinite(row.createdAt) || !Number.isFinite(row.updatedAt) ||
             !(row.audioData === null || row.audioData === undefined || typeof row.audioData === 'string')) throw new Error('Invalid note data');
         const {audioData, audio, ...rest} = row;
