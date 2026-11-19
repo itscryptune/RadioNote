@@ -2,7 +2,7 @@ let dbPromise;
 export function openDB() {
   if (dbPromise) return dbPromise;
   dbPromise = new Promise((resolve, reject) => {
-    const request = indexedDB.open('radionote', 2);
+    const request = indexedDB.open('radionote', 3);
     request.onupgradeneeded = event => {
       const db = request.result;
       if (event.oldVersion === 0) {
@@ -23,8 +23,13 @@ export function openDB() {
       }
     }
     };
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const db = request.result;
+      db.onversionchange = () => { db.close(); dbPromise = null; };
+      resolve(db);
+    };
     request.onerror = () => { dbPromise = null; reject(request.error); };
+    request.onblocked = () => { console.warn('Close other RadioNote tabs to finish the database upgrade.'); };
   });
   return dbPromise;
 }
